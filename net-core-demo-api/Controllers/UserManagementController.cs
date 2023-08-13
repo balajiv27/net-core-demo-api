@@ -25,18 +25,18 @@ namespace net_core_demo_api.Controllers
             return Ok(users);
         }
 
-        [HttpPost(Name = "GetUsersById")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsersById(string id)
-        {
-            var users = await _userManagementService.GetUsersByIdAsync(id);
-            return Ok(users);
-        }
-
-        //[HttpPost(Name = "Login")]
-        //public async Task<ActionResult<IEnumerable<User>>> Login(string id,string password)
+        //[HttpPost(Name = "GetUsersById/{id}")]
+        //public async Task<ActionResult<IEnumerable<User>>> GetUsersById(string id)
         //{
-        //    var users = await _userManagementService.LoginAsync(id,password);
+        //    var users = await _userManagementService.GetUsersByIdAsync(id);
         //    return Ok(users);
         //}
+
+        [HttpPost(Name = "Login")]
+        public async Task<string> Login(string id, string password)
+        {
+            var token = await _userManagementService.LoginAsync(id, password);
+            return token;
+        }
     }
 }
