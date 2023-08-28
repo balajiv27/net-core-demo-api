@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -18,7 +19,9 @@ namespace net_core_demo_api.Controllers
             _userManagementService = userManagementService;
         }
 
+      
         [HttpGet(Name = "GetUsers")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> Get()
         {
             var users = await _userManagementService.GetUsersAsync();
@@ -33,10 +36,19 @@ namespace net_core_demo_api.Controllers
         //}
 
         [HttpPost(Name = "Login")]
-        public async Task<string> Login(string id, string password)
+        public async Task<IActionResult> Login(string id, string password)
         {
+            ApiResponse<string> apiResponse = new ApiResponse<string>() { };
+
             var token = await _userManagementService.LoginAsync(id, password);
-            return token;
+            if (!string.IsNullOrEmpty(token))
+            {
+                apiResponse.Message = "Token Acquired";
+                apiResponse.Success = true;
+                apiResponse.Data = token;
+            }
+            return Ok(apiResponse);
+          
         }
     }
 }
