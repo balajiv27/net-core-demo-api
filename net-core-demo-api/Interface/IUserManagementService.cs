@@ -9,7 +9,7 @@ namespace net_core_demo_api.Interface
         Task CreateUserAsync(User newUser);
         Task UpdateUserAsync(string id, User updatedUser);
         Task RemoveUserAsync(string id);
-        //Task LoginAsync(string id, string password);
+        Task<string> LoginAsync(string id, string password);
 
 
     }
